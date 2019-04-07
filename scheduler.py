@@ -22,7 +22,7 @@ for azan_name in AZAN_ENUM:
 
     if now > azan_time:
         continue
-    
+
     print(f'Schedule {azan_name} at {azan_time}')
     scheduler.enterabs(azan_time.timestamp(), 1, util.prayer.play)
 
