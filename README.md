@@ -1,5 +1,5 @@
-# Azan 🕌
-[![forthebadge](https://forthebadge.com/images/badges/made-with-python.svg)](https://forthebadge.com)[![forthebadge](https://forthebadge.com/images/badges/built-with-love.svg)](https://forthebadge.com)
+# Azan
+[![forthebadge](https://forthebadge.com/images/badges/made-with-python.svg)](https://forthebadge.com) [![forthebadge](https://forthebadge.com/images/badges/built-with-love.svg)](https://forthebadge.com)
 
 Heyo 👋 
 Azan is an open source project that helps in scheduling Azan prayers based on the city you are in. 
@@ -11,7 +11,7 @@ The app is still in progress, it has the following dependecies:
 * Virtual environment (preferred but not required)
 
 
-#### Install dependencies: 
+### Install dependencies: 
 ```sh
 pip install -r requirements.txt
 ```
@@ -41,7 +41,7 @@ Schedule Maghrib at 2019-04-07 19:38:25.716398
 Schedule Isha at 2019-04-07 20:53:25.716456
 ```
 
-# NOTE:
+## NOTE:
 The app still in progress (keep tune for more changes).
 
 License
