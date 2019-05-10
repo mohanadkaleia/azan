@@ -2,7 +2,9 @@ import datetime
 import requests
 import json
 import config
+import logger
 
+log = logger.get_logger(__name__)
 
 class InvalidRequestError(Exception):
     pass
@@ -22,7 +24,7 @@ def get_prayer_times(city, state, country, month, year):
         raise InvalidRequestError('Oops something went wrong here!')
 
     prayers = response.json()['data']
-    current_date = datetime.datetime.now().date()
+    current_date = (datetime.datetime.now() + datetime.timedelta(days=1)).date()
     
     for prayer in prayers:
         prayer_date = datetime.datetime.strptime(
