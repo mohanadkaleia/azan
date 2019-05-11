@@ -5,6 +5,7 @@ import time
 import util.prayer
 import util.api
 import logger
+import schedule
 
 log = logger.get_logger(__name__)
 
@@ -22,7 +23,6 @@ def main():
         now.date().month,
         now.date().year)
 
-    water_time = datetime.datetime.now()
     for azan_name in AZAN_ENUM:
         now = datetime.datetime.now()
         azan_time = util.prayer.format_azan_time(azan_times[azan_name])
@@ -32,15 +32,16 @@ def main():
 
         log.info('{} is scheduled at {}'.format(azan_name, azan_time))
         scheduler.enterabs(float(azan_time.strftime('%s')), 1, util.prayer.play, ())
-
-        water_time += datetime.timedelta(seconds=10)
-
+        
     scheduler.run()
-
 
 if __name__ == '__main__':
     try:
-        main()
+        # main()
+        schedule.every().day.at("01:00").do(main)
+        while True:
+            schedule.run_pending()
+            time.sleep(60) # wait one minute
     except Exception:
         log.exception('Oops something went wrong')
         raise
