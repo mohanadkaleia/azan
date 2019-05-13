@@ -4,13 +4,16 @@ import json
 import config
 import logger
 
+from adhan import adhan
+from adhan.methods import ISNA, ASR_STANDARD
+
 log = logger.get_logger(__name__)
 
 class InvalidRequestError(Exception):
     pass
 
 
-def get_prayer_times(city, state, country, month, year):
+def get_prayer_times_api(city, state, country, month, year):
     payload = {
         'city': city,
         'country': country,
@@ -20,7 +23,7 @@ def get_prayer_times(city, state, country, month, year):
         'method': config.default['method']
     }
     response = requests.get(config.default['azan_end_point'], params=payload)
- 
+
     if response.status_code != requests.codes.ok:
         raise InvalidRequestError('Oops something went wrong here!')
     log.info('got response from azan api')
@@ -35,3 +38,15 @@ def get_prayer_times(city, state, country, month, year):
             return prayer['timings']
 
     raise InvalidRequestError('Oops, something went wrong, could not find the correct date')
+
+def get_prayer_times(lat, long):
+    params = {}
+    params.update(ISNA)
+    params.update(ASR_STANDARD)
+
+    return adhan(
+        day=datetime.date.today(),
+        location=(lat, long),
+        parameters=params,
+        timezone_offset=-7,
+    )

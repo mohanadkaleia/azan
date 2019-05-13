@@ -1,9 +1,9 @@
 certifi==2019.3.9
 chardet==3.0.4
 idna==2.8
-playsound==1.2.2
-python-crontab==2.3.6
 python-dateutil==2.8.0
 requests==2.21.0
 six==1.12.0
 urllib3==1.24.1
+schedule==0.6.0
+adhan==0.1.1

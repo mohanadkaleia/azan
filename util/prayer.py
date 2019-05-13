@@ -9,12 +9,11 @@ log = logger.get_logger(__name__)
 
 def play(name=None):
     if not name:
-        name = 'water.mp3'
+        name = 'azan.mp3'
     path = os.path.dirname(os.path.abspath(__file__))
     file_path = '{}/../assets/{}'.format(path, name)
     log.info('Calling Azan now')
     log.info(file_path)
-    # os.system('cvlc --play-and-exit {}'.format(file_path))
     pygame.init()
     pygame.mixer.music.load(file_path)
     pygame.mixer.music.play(0)
