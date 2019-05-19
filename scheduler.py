@@ -7,22 +7,19 @@ import util.api
 import logger
 import schedule
 
+
 log = logger.get_logger(__name__)
 
 AZAN_ENUM = ['fajr', 'zuhr', 'asr', 'maghrib', 'isha']
 LAT = 37.778160
 LONG = -122.412560
 
+
 def main():
     scheduler = sched.scheduler(time.time, time.sleep)
     now = datetime.datetime.now()
     log.info('Sending a request to azan API')
     azan_times = util.api.get_prayer_times(LAT, LONG)
-        # config.default['city'],
-        # config.default['state'],
-        # config.default['country'],
-        # now.date().month,
-        # now.date().year)
 
     for azan_name in AZAN_ENUM:
         now = datetime.datetime.now()
@@ -36,13 +33,14 @@ def main():
 
     scheduler.run()
 
+
 if __name__ == '__main__':
     try:
         main()
         schedule.every().day.at("01:00").do(main)
         while True:
             schedule.run_pending()
-            time.sleep(60) # wait one minute
+            time.sleep(60)  # wait one minute
     except Exception:
         log.exception('Oops something went wrong')
         raise
