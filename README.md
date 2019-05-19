@@ -3,11 +3,11 @@
 
 Heyo 👋 
 Azan is an open source project that helps in scheduling Azan prayers based on the city you are in. 
-The app is built by calling this API `https://aladhan.com/prayer-times-api`
+The app is built by calling this API `adhan library` which supports multiple methods (e.g., ISNA)
 
 ### Excited to run the app? 🚀
 The app is still in progress, it has the following dependecies:
-* Python (required) 
+* Python 2.7+ (required) 
 * Virtual environment (preferred but not required)
 
 
