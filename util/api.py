@@ -7,7 +7,7 @@ from adhan.methods import ISNA, ASR_STANDARD
 log = logger.get_logger(__name__)
 
 
-def get_prayer_times(lat, long):
+def get_prayer_times(method, lat, long):
     params = {}
     params.update(ISNA)
     params.update(ASR_STANDARD)

@@ -11,15 +11,16 @@ import schedule
 log = logger.get_logger(__name__)
 
 AZAN_ENUM = ['fajr', 'zuhr', 'asr', 'maghrib', 'isha']
-LAT = 37.778160
-LONG = -122.412560
+LAT = config.default['lat']
+LONG = config.default['long']
+METHOD = config.default['method']
 
 
-def main():
+def main():    
     scheduler = sched.scheduler(time.time, time.sleep)
     now = datetime.datetime.now()
     log.info('Sending a request to azan API')
-    azan_times = util.api.get_prayer_times(LAT, LONG)
+    azan_times = util.api.get_prayer_times(METHOD, LAT, LONG)
 
     for azan_name in AZAN_ENUM:
         now = datetime.datetime.now()
