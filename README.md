@@ -16,6 +16,10 @@ The app is still in progress, it has the following dependecies:
 pip install -r requirements.txt
 ```
 
+* Pygame: 
+
+Raspberry pi comes loaded with Pygame, for other platforms please follow Pygame's docs to isntall it: https://www.pygame.org/wiki/GettingStarted#Pygame%20Installation
+
 #### Configure the app: 
 To configure the app, navigate to `convifg.py` and set the `city`, `state`, and the `cuontry`, example:
 ```sh
@@ -42,6 +46,10 @@ Schedule Asr at 2019-04-07 16:49:25.716324
 Schedule Maghrib at 2019-04-07 19:38:25.716398
 Schedule Isha at 2019-04-07 20:53:25.716456
 ```
+
+## Run the app on boot:
+I found this article very helpful to run the Azan script on reboot, especally if you are runnning it on Raspberry Pi, you can check the article from here (I'm just too lazy to write how here 😆)
+https://www.raspberrypi-spy.co.uk/2015/02/how-to-autorun-a-python-script-on-raspberry-pi-boot/
 
 ## NOTE:
 The app still in progress (keep tune for more changes).
