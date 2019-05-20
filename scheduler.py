@@ -16,7 +16,7 @@ LONG = config.default['long']
 METHOD = config.default['method']
 
 
-def main():    
+def main():
     scheduler = sched.scheduler(time.time, time.sleep)
     now = datetime.datetime.now()
     log.info('Sending a request to azan API')
@@ -30,7 +30,7 @@ def main():
             continue
 
         log.info('{} is scheduled at {}'.format(azan_name, azan_time))
-        scheduler.enterabs(float(azan_time.strftime('%s')), 1, util.prayer.play, ())
+        scheduler.enterabs(float(azan_time.strftime('%s')), 1, util.prayer.play, ({azan_time:azan_name}))
 
     scheduler.run()
 
