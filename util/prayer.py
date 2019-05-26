@@ -7,13 +7,13 @@ import pygame
 log = logger.get_logger(__name__)
 
 
-def play(name=None, azan_time=None):
+def play(name=None, azan_name=None):
     if not name:
         name = 'azan.mp3'
 
     path = os.path.dirname(os.path.abspath(__file__))
     file_path = '{}/../assets/{}'.format(path, name)
-    log.info('Calling {} Azan now'.format(azan_time))
+    log.info('Calling {} Azan now'.format(azan_name))
     pygame.init()
     pygame.mixer.music.load(file_path)
     pygame.mixer.music.play(0)

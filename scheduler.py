@@ -30,7 +30,7 @@ def main():
             continue
 
         log.info('{} is scheduled at {}'.format(azan_name, azan_time))
-        scheduler.enterabs(float(azan_time.strftime('%s')), 1, util.prayer.play, ({'azan_time':azan_name}))
+        scheduler.enterabs(float(azan_time.strftime('%s')), 1, util.prayer.play, kwargs={'azan_name':azan_name})
 
     scheduler.run()
 
