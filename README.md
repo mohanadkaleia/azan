@@ -21,7 +21,7 @@ pip install -r requirements.txt
 Raspberry pi comes loaded with Pygame, for other platforms please follow Pygame's docs to isntall it: https://www.pygame.org/wiki/GettingStarted#Pygame%20Installation
 
 #### Configure the app: 
-To configure the app, navigate to `convifg.py` and set the `city`, `state`, and the `cuontry`, example:
+To configure the app, navigate to `convifg.py` and set the `city`, `state`, and other configurations, example:
 ```sh
 default = {
     "city": "San Francisco",
@@ -48,8 +48,11 @@ Schedule Isha at 2019-04-07 20:53:25.716456
 ```
 
 ## Run the app on boot:
-I found this article very helpful to run the Azan script on reboot, especally if you are runnning it on Raspberry Pi, you can check the article from here (I'm just too lazy to write how here 😆)
-https://www.raspberrypi-spy.co.uk/2015/02/how-to-autorun-a-python-script-on-raspberry-pi-boot/
+It is important to run the app when the Pi restarts, to do so, you can add the following line to your rc.local file:
+```sh
+> sudo nano /etc/rc.local
+python3 <path-to-azan-folder>/azan/scheduler.py
+```
 
 ## NOTE:
 The app still in progress (keep tune for more changes).
