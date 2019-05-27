@@ -1,10 +1,12 @@
 import logging
+import os
 import sys
-from logging.handlers import TimedRotatingFileHandler
 
-FORMATTER = logging.Formatter(
-    "%(asctime)s - %(name)s - %(levelname)s - %(message)s")
-LOG_FILE = "azan.log"
+
+FORMATTER = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+LOG_FILE = BASE_DIR + "/azan.log"
+
 
 
 def get_console_handler():

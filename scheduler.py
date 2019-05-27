@@ -18,8 +18,7 @@ METHOD = config.default['method']
 
 def main():
     scheduler = sched.scheduler(time.time, time.sleep)
-    now = datetime.datetime.now()
-    log.info('Sending a request to azan API')
+    now = datetime.datetime.now()    
     azan_times = util.api.get_prayer_times(METHOD, LAT, LONG)
 
     for azan_name in AZAN_ENUM:
