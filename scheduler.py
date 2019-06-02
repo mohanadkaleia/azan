@@ -30,13 +30,13 @@ def main():
             continue
 
         log.info('{} is scheduled at {}'.format(azan_name, azan_time))
-        azan_schedule_disp.append('{} is scheduled at {}'.format(azan_name, azan_time))
+        azan_schedule_disp.append('{} at {}'.format(azan_name, azan_time))
         scheduler.enterabs(float(azan_time.strftime('%s')), 1, util.prayer.play, kwargs={'azan_name':azan_name})
 
     if config.default['pioled']:
         pioled = util.display.Display()
         pioled.draw_text(azan_schedule_disp)
-        
+
     scheduler.run()
 
 
