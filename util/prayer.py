@@ -4,6 +4,7 @@ import sys
 import logger
 import pygame
 
+
 log = logger.get_logger(__name__)
 
 
