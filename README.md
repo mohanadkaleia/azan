@@ -30,7 +30,8 @@ default = {
     "method": "ISNA",
     "lat": 37.778160,
     "long": -122.412560, 
-    "tz_offest": -7
+    "tz_offest": -7,
+    "pioled": False,
 }
 ```
 
@@ -53,6 +54,13 @@ It is important to run the app when the Pi restarts, to do so, you can add the f
 > sudo nano /etc/rc.local
 python3 <path-to-azan-folder>/azan/scheduler.py
 ```
+
+## Integrate PiOLED to display Azan schedule on LED screen (Raspberry Pi only)
+You wann something cool! 😎.. try to integrate PiOLED into your pi and you can see the Azan schedule displayed on your little small LED display. you will need the following: 
+* PiOLED you can buy it from Amazon or Adafruit directly 
+* Follow this link to install the required libraries: 
+https://www.adafruit.com/product/3527
+* Don't forget to enable PiOLED from the config file
 
 ## NOTE:
 The app still in progress (keep tune for more changes).
