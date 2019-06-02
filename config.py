@@ -6,4 +6,5 @@ default = {
     "tz_offest": "-7",
     "lat": 37.778160,
     "long": -122.412560,
+    "pioled": True
 }

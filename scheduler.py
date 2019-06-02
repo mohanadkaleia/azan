@@ -1,5 +1,6 @@
 import config
 import datetime
+import util.display
 import sched
 import time
 import util.prayer
@@ -18,9 +19,9 @@ METHOD = config.default['method']
 
 def main():
     scheduler = sched.scheduler(time.time, time.sleep)
-    now = datetime.datetime.now()    
+    now = datetime.datetime.now()
     azan_times = util.api.get_prayer_times(METHOD, LAT, LONG)
-
+    azan_schedule_disp = []
     for azan_name in AZAN_ENUM:
         now = datetime.datetime.now()
         azan_time = azan_times[azan_name]
@@ -29,9 +30,14 @@ def main():
             continue
 
         log.info('{} is scheduled at {}'.format(azan_name, azan_time))
+        azan_schedule_disp.append('{} is scheduled at {}'.format(azan_name, azan_time))
         scheduler.enterabs(float(azan_time.strftime('%s')), 1, util.prayer.play, kwargs={'azan_name':azan_name})
 
     scheduler.run()
+
+    if config.default['pioled']:
+        pioled = util.display.Display()
+        pioled.draw_text(azan_schedule_disp)
 
 
 if __name__ == '__main__':

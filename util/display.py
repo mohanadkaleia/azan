@@ -45,12 +45,15 @@ class Display:
         self.disp.clear()
         self.disp.display()
 
-    def draw_text(self, text):
+    def draw_text(self, lines):
         # Draw a black filled box to clear the image.
         self.draw.rectangle((0, 0, self.width, self.height), outline=0, fill=0)
-
+        margin_top = TOP
         # Write two lines of text.
-        self.draw.text((X, TOP), text, font=FONT, fill=255)
+        for line in lines:
+            self.draw.text((X, margin_top), line, font=FONT, fill=255)
+            margin_top += 8
+
         self.disp.image(self.image)
         self.disp.show()
 
