@@ -1,6 +1,5 @@
 import config
 import datetime
-import util.display
 import sched
 import time
 import util.prayer
@@ -16,6 +15,10 @@ LAT = config.default['lat']
 LONG = config.default['long']
 METHOD = config.default['method']
 
+def display_pioled(azan_schedule):
+    from util.display import Display
+    pioled = util.display.Display()
+    pioled.draw_text(azan_schedule)
 
 def main():
     scheduler = sched.scheduler(time.time, time.sleep)
@@ -30,12 +33,12 @@ def main():
             continue
 
         log.info('{} is scheduled at {}'.format(azan_name, azan_time))
-        azan_schedule_disp.append('{} at {}'.format(azan_name, azan_time))
+        azan_schedule_disp.append('{} at {}'.format(azan_name, azan_time.strftime("%H:%M")))
         scheduler.enterabs(float(azan_time.strftime('%s')), 1, util.prayer.play, kwargs={'azan_name':azan_name})
 
     if config.default['pioled']:
-        pioled = util.display.Display()
-        pioled.draw_text(azan_schedule_disp)
+        display_pioled(azan_schedule_disp)
+
 
     scheduler.run()
 
