@@ -64,7 +64,7 @@ https://www.adafruit.com/product/3527
 ![image](https://user-images.githubusercontent.com/3438755/58767419-8c9c5400-853f-11e9-90c2-30f5f335ef28.png)
 
 ## NOTE:
-The app still in progress (keep tune for more changes).
+You are free to use or redistribute the app, but please credit this project when you do so 😊.
 
 License
 ----
