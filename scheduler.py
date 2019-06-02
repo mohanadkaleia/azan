@@ -33,11 +33,13 @@ def main():
         azan_schedule_disp.append('{} is scheduled at {}'.format(azan_name, azan_time))
         scheduler.enterabs(float(azan_time.strftime('%s')), 1, util.prayer.play, kwargs={'azan_name':azan_name})
 
-    scheduler.run()
-
     if config.default['pioled']:
         pioled = util.display.Display()
         pioled.draw_text(azan_schedule_disp)
+        
+    scheduler.run()
+
+
 
 
 if __name__ == '__main__':
