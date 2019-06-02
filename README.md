@@ -61,6 +61,7 @@ You wann something cool! 😎.. try to integrate PiOLED into your pi and you can
 * Follow this link to install the required libraries: 
 https://www.adafruit.com/product/3527
 * Don't forget to enable PiOLED from the config file
+![image](https://user-images.githubusercontent.com/3438755/58767419-8c9c5400-853f-11e9-90c2-30f5f335ef28.png)
 
 ## NOTE:
 The app still in progress (keep tune for more changes).
