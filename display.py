@@ -1,11 +1,10 @@
 import time
 import os
-import Adafruit_GPIO.SPI as SPI
-import Adafruit_SSD1306
 
-from PIL import Image
-from PIL import ImageDraw
-from PIL import ImageFont
+from board import SCL, SDA
+import busio
+from PIL import Image, ImageDraw, ImageFont
+import adafruit_ssd1306
 
 
 # Raspberry Pi pin configuration:
@@ -16,6 +15,8 @@ SPI_PORT = 0
 SPI_DEVICE = 0
 PADDING = -2
 TOP = PADDING
+WIDTH = 128
+HEIGHT = 32
 
 # Load default font.
 FONT = ImageFont.load_default()
@@ -28,13 +29,11 @@ height, width = 0, 0
 class Display:
 
     def __init__(self):
-        self.disp = Adafruit_SSD1306.SSD1306_128_32(rst=RST)
+        i2c = busio.I2C(SCL, SDA)
+        self.disp = adafruit_ssd1306.SSD1306_I2C(WIDTH, HEIGHT, i2c)
         self.height = self.disp.height
         self.width = self.disp.width
         self.image = Image.new('1', (self.width, self.height))
-
-        # Initialize library.
-        self.disp.begin()
 
         # Get drawing object to draw on image.
         self.draw = ImageDraw.Draw(self.image)
@@ -53,7 +52,7 @@ class Display:
         # Write two lines of text.
         self.draw.text((X, TOP), text, font=FONT, fill=255)
         self.disp.image(self.image)
-        self.disp.display()
+        self.disp.show()
 
 
 if __name__ == '__main__':
