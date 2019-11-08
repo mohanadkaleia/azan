@@ -24,6 +24,7 @@ def main():
     scheduler = sched.scheduler(time.time, time.sleep)
     now = datetime.datetime.now()
     azan_times = util.api.get_prayer_times(METHOD, LAT, LONG)
+
     azan_schedule_disp = []
     for azan_name in AZAN_ENUM:
         now = datetime.datetime.now()
