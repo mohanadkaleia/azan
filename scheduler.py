@@ -47,12 +47,13 @@ def main():
 
 
 if __name__ == '__main__':
-    try:
-        main()
-        schedule.every().day.at("01:00").do(main)
-        while True:
-            schedule.run_pending()
-            time.sleep(60)  # wait one minute
-    except Exception:
-        log.exception('Oops something went wrong')
-        raise
+    while True:
+        try:
+            main()
+            schedule.every().day.at("01:00").do(main)
+            while True:
+                schedule.run_pending()
+                time.sleep(60)  # wait one minute
+        except Exception:
+            log.exception('Oops something went wrong')
+            raise
