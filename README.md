@@ -7,7 +7,7 @@ The app is built by calling this API `adhan library` which supports multiple met
 
 ### Excited to run the app? 🚀
 The app is still in progress, it has the following dependecies:
-* Python 2.7+ (required) 
+* Python 3 (required) (sorry but Python 2.7 is not supported here anymore!) 😝
 * Virtual environment (preferred but not required)
 
 
