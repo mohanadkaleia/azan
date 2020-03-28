@@ -3,6 +3,7 @@ import requests
 import json
 import config
 import logger
+import time
 
 from adhan import adhan
 from adhan.methods import ISNA, ASR_STANDARD
@@ -48,5 +49,11 @@ def get_prayer_times(lat, long):
         day=datetime.date.today(),
         location=(lat, long),
         parameters=params,
-        timezone_offset=-7,
+        timezone_offset=get_timezone_offset(),
     )
+
+
+def get_timezone_offset():
+	ts = time.time()
+	utc_offset = (datetime.datetime.fromtimestamp(ts) - datetime.datetime.utcfromtimestamp(ts)).total_seconds()
+	return utc_offset / 3600

@@ -27,7 +27,7 @@ def main():
     for azan_name in AZAN_ENUM:
         now = datetime.datetime.now()
         azan_time = azan_times[azan_name]
-
+        
         if now > azan_time:
             continue
 
