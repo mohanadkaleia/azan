@@ -6,7 +6,7 @@ Azan is an open source project that helps in scheduling Azan prayers based on th
 The app is built by calling this API `adhan library` which supports multiple methods (e.g., ISNA)
 
 ### Excited to run the app? 🚀
-The app is still in progress, it has the following dependecies:
+The app has the following dependecies:
 * Python 3 (required) (sorry but Python 2.7 is not supported here anymore!) 😝
 * Virtual environment (preferred but not required)
 
@@ -21,7 +21,7 @@ pip install -r requirements.txt
 Raspberry pi comes loaded with Pygame, for other platforms please follow Pygame's docs to isntall it: https://www.pygame.org/wiki/GettingStarted#Pygame%20Installation
 
 #### Configure the app: 
-To configure the app, navigate to `convifg.py` and set the `city`, `state`, and other configurations, example:
+To configure the app, navigate to `config.py` and set the `city`, `state`, and other configurations, example:
 ```sh
 default = {
     "city": "San Francisco",
@@ -30,7 +30,6 @@ default = {
     "method": "ISNA",
     "lat": 37.778160,
     "long": -122.412560, 
-    "tz_offest": -7,
     "pioled": False,
 }
 ```
