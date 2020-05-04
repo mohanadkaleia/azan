@@ -15,6 +15,7 @@ def play(name=None, azan_name=None):
     path = os.path.dirname(os.path.abspath(__file__))
     file_path = '{}/../assets/{}'.format(path, name)
     log.info('Calling {} azan now'.format(azan_name))
+    
     pygame.init()
-    pygame.mixer.music.load(file_path)
-    pygame.mixer.music.play(0)
+    azan = pygame.mixer.Sound(file_path)
+    azan.play()    

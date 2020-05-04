@@ -6,6 +6,7 @@ import util.prayer
 import util.api
 import logger
 import schedule
+import sys
 
 
 log = logger.get_logger(__name__)
@@ -43,15 +44,17 @@ def main():
 
     scheduler.run()
 
-
 if __name__ == '__main__':
-    while True:
-        try:
-            main()
-            schedule.every().day.at("01:00").do(main)
-            while True:
-                schedule.run_pending()
-                time.sleep(60)  # wait one minute
-        except Exception:
-            log.exception('Oops something went wrong')
-            raise
+    if len(sys.argv) > 1 and sys.argv[1] == 'test':
+        util.prayer.play()        
+    else:
+        while True:
+            try:
+                main()
+                schedule.every().day.at("01:00").do(main)
+                while True:
+                    schedule.run_pending()
+                    time.sleep(60)  # wait one minute
+            except Exception:
+                log.exception('Oops something went wrong')
+                raise
