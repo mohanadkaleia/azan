@@ -46,12 +46,7 @@ def main():
 
 if __name__ == '__main__':
     if len(sys.argv) > 1 and sys.argv[1] == 'test':
-        import simpleaudio as sa
-
-        wave_obj = sa.WaveObject.from_wave_file("/Users/mohanad/Workspace/azan/assets/azan.wav")
-        play_obj = wave_obj.play()
-        play_obj.wait_done()      
-
+        util.prayer.play()     
     else:
         while True:
             try:
