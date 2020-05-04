@@ -16,10 +16,6 @@ The app has the following dependecies:
 pip install -r requirements.txt
 ```
 
-* Pygame: 
-
-Raspberry pi comes loaded with Pygame, for other platforms please follow Pygame's docs to isntall it: https://www.pygame.org/wiki/GettingStarted#Pygame%20Installation
-
 #### Configure the app: 
 To configure the app, navigate to `config.py` and set the `city`, `state`, and other configurations, example:
 ```sh
