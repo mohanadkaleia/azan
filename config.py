@@ -5,5 +5,10 @@ default = {
     "method": "ISNA",
     "lat": 37.778160,
     "long": -122.412560,
-    "pioled": False
+    "pioled": False,
+    "fajr": True,
+    "zuhr": False, 
+    "asr": False,
+    "maghrib": False, 
+    "isha": True,
 }

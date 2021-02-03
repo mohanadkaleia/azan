@@ -31,7 +31,8 @@ def main():
         now = datetime.datetime.now()
         azan_time = azan_times[azan_name]
         
-        if now > azan_time:
+        # Skip if the azan time is passed or if the azan is muted
+        if now > azan_time or not config.default[azan_name]:
             continue
 
         log.info('{} is scheduled at {}'.format(azan_name, azan_time))
