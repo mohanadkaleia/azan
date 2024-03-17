@@ -9,6 +9,6 @@ default = {
     "fajr": True,
     "zuhr": False, 
     "asr": False,
-    "maghrib": False, 
+    "maghrib": True, 
     "isha": True,
 }
