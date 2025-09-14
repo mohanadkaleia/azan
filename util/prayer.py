@@ -39,14 +39,16 @@ def play_with_aplay(file_path, retry_count=3):
             if audio_device != "default":
                 cmd.extend(['-D', audio_device])
             
-            # Add format specifications to prevent sample rate issues
-            audio_format = config.default.get("audio_format", "S16_LE")
-            audio_channels = str(config.default.get("audio_channels", 2))
-            audio_sample_rate = str(config.default.get("audio_sample_rate", 22050))
-            
-            cmd.extend(['-f', audio_format])      # Audio format
-            cmd.extend(['-c', audio_channels])    # Number of channels
-            cmd.extend(['-r', audio_sample_rate]) # Sample rate
+            # Let ALSA handle format conversion automatically when using plughw
+            # Only add format specs if using direct hw device
+            if not audio_device.startswith("plughw"):
+                audio_format = config.default.get("audio_format", "S16_LE")
+                audio_channels = str(config.default.get("audio_channels", 2))
+                audio_sample_rate = str(config.default.get("audio_sample_rate", 22050))
+                
+                cmd.extend(['-f', audio_format])      # Audio format
+                cmd.extend(['-c', audio_channels])    # Number of channels
+                cmd.extend(['-r', audio_sample_rate]) # Sample rate
             cmd.append(file_path)
             
             log.info(f"Running aplay command: {' '.join(cmd)}")
