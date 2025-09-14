@@ -15,9 +15,40 @@ except ImportError:
 log = logger.get_logger(__name__)
 
 
+def detect_usb_audio_device():
+    """Automatically detect USB audio device"""
+    try:
+        result = subprocess.run(['aplay', '-l'], capture_output=True, text=True, timeout=10)
+        lines = result.stdout.split('\n')
+        
+        # Look for USB audio device
+        for line in lines:
+            if 'USB' in line and 'card' in line.lower():
+                # Extract card number (e.g., "card 1: Device [USB2.0 Device]")
+                if 'card' in line:
+                    parts = line.split()
+                    for i, part in enumerate(parts):
+                        if part == 'card' and i+1 < len(parts):
+                            card_num = parts[i+1].rstrip(':')
+                            log.info(f"Auto-detected USB audio device: card {card_num}")
+                            return f"plughw:{card_num},0"
+        
+        # Fallback: if no USB found, try card 1 (common for USB)
+        log.info("No USB device auto-detected, falling back to plughw:1,0")
+        return "plughw:1,0"
+        
+    except Exception as e:
+        log.error(f"USB device detection failed: {e}, using default")
+        return "default"
+
+
 def play_with_aplay(file_path, retry_count=3):
     """Fallback method using aplay (ALSA's command-line player) with retry logic"""
     audio_device = config.default.get("audio_device", "default")
+    
+    # Auto-detect USB device if configured
+    if audio_device == "auto":
+        audio_device = detect_usb_audio_device()
     
     for attempt in range(retry_count):
         try:
