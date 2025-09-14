@@ -17,4 +17,8 @@ default = {
     "audio_volume": 100,        # Volume level (0-100) for omxplayer
     "audio_retry_attempts": 3,  # Number of retry attempts for flaky USB audio
     "usb_audio_wakeup": True,   # Enable USB audio wake-up for flaky devices
+    # Audio format settings (matches your azan.wav file)
+    "audio_sample_rate": 22050, # Sample rate in Hz (22050 for your file)
+    "audio_channels": 2,        # Number of channels (2 = stereo)
+    "audio_format": "S16_LE",   # Audio format (16-bit little-endian)
 }
