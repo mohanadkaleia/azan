@@ -70,10 +70,7 @@ def play_with_aplay(file_path, retry_count=3):
             if audio_device != "default":
                 cmd.extend(['-D', audio_device])
             
-            # Always add format specs for consistent playback speed
-            cmd.extend(['-f', 'S16_LE'])  # 16-bit little-endian
-            cmd.extend(['-c', '2'])       # 2 channels (stereo)  
-            cmd.extend(['-r', '22050'])   # 22050 Hz sample rate (matches your azan.wav)
+            # Let aplay auto-detect format from the WAV file (works with your setup)
             cmd.append(file_path)
             
             log.info(f"Running aplay command: {' '.join(cmd)}")
