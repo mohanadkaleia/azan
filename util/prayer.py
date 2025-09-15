@@ -50,53 +50,58 @@ def play_with_aplay(file_path, retry_count=3):
     if audio_device == "auto":
         audio_device = detect_usb_audio_device()
     
+    # Try both hw and plughw variants for better compatibility
+    devices_to_try = [audio_device]
+    if audio_device.startswith("hw:"):
+        plughw_device = audio_device.replace("hw:", "plughw:")
+        devices_to_try.append(plughw_device)
+    elif audio_device.startswith("plughw:"):
+        hw_device = audio_device.replace("plughw:", "hw:")  
+        devices_to_try.append(hw_device)
+    
     for attempt in range(retry_count):
-        try:
-            log.info(f"Attempting to play audio using aplay (attempt {attempt + 1}/{retry_count})...")
+        # Sometimes USB audio needs time to initialize
+        if attempt > 0:
+            log.info(f"Waiting 2 seconds before retry...")
+            time.sleep(2)
             
-            # Sometimes USB audio needs time to initialize
-            if attempt > 0:
-                log.info(f"Waiting 2 seconds before retry...")
-                time.sleep(2)
+            # Try to reset/wake up the audio device
+            try:
+                subprocess.run(['amixer', 'sset', 'PCM', '100%'], 
+                             capture_output=True, text=True, timeout=5)
+            except:
+                pass  # Ignore amixer errors
+        
+        # Try each device variant for this attempt
+        for device_to_try in devices_to_try:
+            try:
+                log.info(f"Attempting to play audio using aplay with {device_to_try} (attempt {attempt + 1}/{retry_count})...")
                 
-                # Try to reset/wake up the audio device
-                try:
-                    subprocess.run(['amixer', 'sset', 'PCM', '100%'], 
-                                 capture_output=True, text=True, timeout=5)
-                except:
-                    pass  # Ignore amixer errors
-            
-            cmd = ['aplay']
-            if audio_device != "default":
-                cmd.extend(['-D', audio_device])
-            
-            # Let aplay auto-detect format from the WAV file (works with your setup)
-            cmd.append(file_path)
-            
-            log.info(f"Running aplay command: {' '.join(cmd)}")
-            result = subprocess.run(cmd, capture_output=True, text=True, check=True, timeout=10)
-            log.info("Audio played successfully using aplay")
-            return True
-            
-        except subprocess.CalledProcessError as e:
-            log.error(f"aplay failed (attempt {attempt + 1}): {e}")
-            log.error(f"aplay stderr: {e.stderr}")
-            
-            # On failure, try to reset ALSA
-            if attempt < retry_count - 1:
-                try:
-                    log.info("Attempting to reset ALSA...")
-                    subprocess.run(['sudo', 'alsa', 'force-reload'], 
-                                 capture_output=True, text=True, timeout=10)
-                except:
-                    pass
+                cmd = ['aplay']
+                if device_to_try != "default":
+                    cmd.extend(['-D', device_to_try])
+                
+                # Let aplay auto-detect format from the WAV file (works with your setup)
+                cmd.append(file_path)
+                
+                log.info(f"Running aplay command: {' '.join(cmd)}")
+                result = subprocess.run(cmd, capture_output=True, text=True, check=True, timeout=180)
+                log.info(f"Audio played successfully using aplay with {device_to_try}")
+                return True
+                
+            except subprocess.CalledProcessError as e:
+                log.error(f"aplay with {device_to_try} failed: {e}")
+                if hasattr(e, 'stderr') and e.stderr:
+                    log.error(f"aplay stderr: {e.stderr}")
+                continue  # Try next device
                     
-        except subprocess.TimeoutExpired:
-            log.error(f"aplay timed out (attempt {attempt + 1})")
-            
-        except FileNotFoundError:
-            log.error("aplay command not found")
-            return False
+            except subprocess.TimeoutExpired:
+                log.error(f"aplay with {device_to_try} timed out")
+                continue  # Try next device
+                
+            except FileNotFoundError:
+                log.error("aplay command not found")
+                return False
     
     return False
 
@@ -119,7 +124,7 @@ def play_with_omxplayer(file_path, retry_count=2):
             cmd = ['omxplayer', '--no-osd', '-o', 'alsa', '--vol', str(volume_mb), file_path]
             log.info(f"Running omxplayer command: {' '.join(cmd)}")
             
-            result = subprocess.run(cmd, capture_output=True, text=True, check=True, timeout=15)
+            result = subprocess.run(cmd, capture_output=True, text=True, check=True, timeout=180)
             log.info("Audio played successfully using omxplayer")
             return True
             
@@ -187,8 +192,10 @@ def play(name=None, azan_name=None):
     if not name:
         name = 'azan.wav'
 
-    path = os.path.dirname(os.path.abspath(__file__))
-    file_path = '{}/../assets/{}'.format(path, name)
+    # Get the project root directory (parent of util folder)
+    util_dir = os.path.dirname(os.path.abspath(__file__))
+    project_root = os.path.dirname(util_dir)
+    file_path = os.path.join(project_root, 'assets', name)
     
     # Check if audio file exists
     if not os.path.exists(file_path):
