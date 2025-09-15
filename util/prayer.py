@@ -31,11 +31,11 @@ def detect_usb_audio_device():
                         if part == 'card' and i+1 < len(parts):
                             card_num = parts[i+1].rstrip(':')
                             log.info(f"Auto-detected USB audio device: card {card_num}")
-                            return f"plughw:{card_num},0"
+                            return f"hw:{card_num},0"
         
         # Fallback: if no USB found, try card 1 (common for USB)
-        log.info("No USB device auto-detected, falling back to plughw:1,0")
-        return "plughw:1,0"
+        log.info("No USB device auto-detected, falling back to hw:1,0")
+        return "hw:1,0"
         
     except Exception as e:
         log.error(f"USB device detection failed: {e}, using default")
@@ -70,20 +70,14 @@ def play_with_aplay(file_path, retry_count=3):
             if audio_device != "default":
                 cmd.extend(['-D', audio_device])
             
-            # Let ALSA handle format conversion automatically when using plughw
-            # Only add format specs if using direct hw device
-            if not audio_device.startswith("plughw"):
-                audio_format = config.default.get("audio_format", "S16_LE")
-                audio_channels = str(config.default.get("audio_channels", 2))
-                audio_sample_rate = str(config.default.get("audio_sample_rate", 22050))
-                
-                cmd.extend(['-f', audio_format])      # Audio format
-                cmd.extend(['-c', audio_channels])    # Number of channels
-                cmd.extend(['-r', audio_sample_rate]) # Sample rate
+            # Always add format specs for consistent playback speed
+            cmd.extend(['-f', 'S16_LE'])  # 16-bit little-endian
+            cmd.extend(['-c', '2'])       # 2 channels (stereo)  
+            cmd.extend(['-r', '22050'])   # 22050 Hz sample rate (matches your azan.wav)
             cmd.append(file_path)
             
             log.info(f"Running aplay command: {' '.join(cmd)}")
-            result = subprocess.run(cmd, capture_output=True, text=True, check=True, timeout=30)
+            result = subprocess.run(cmd, capture_output=True, text=True, check=True, timeout=10)
             log.info("Audio played successfully using aplay")
             return True
             
@@ -128,7 +122,7 @@ def play_with_omxplayer(file_path, retry_count=2):
             cmd = ['omxplayer', '--no-osd', '-o', 'alsa', '--vol', str(volume_mb), file_path]
             log.info(f"Running omxplayer command: {' '.join(cmd)}")
             
-            result = subprocess.run(cmd, capture_output=True, text=True, check=True, timeout=60)
+            result = subprocess.run(cmd, capture_output=True, text=True, check=True, timeout=15)
             log.info("Audio played successfully using omxplayer")
             return True
             
@@ -255,5 +249,6 @@ def play(name=None, azan_name=None):
             log.error(f"Failed to play audio using {method_name}: {e}")
             continue
     
-    log.error("All audio playback methods failed!")
+    log.error("All audio playback methods failed! Prayer call could not be played.")
+    # Don't fail completely - log the error but continue
     return False  

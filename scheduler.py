@@ -21,6 +21,15 @@ def display_pioled(azan_schedule):
     pioled = util.display.Display()
     pioled.draw_text(azan_schedule)
 
+def safe_prayer_call(azan_name):
+    """Safely execute prayer call with error handling"""
+    try:
+        log.info(f'Playing {azan_name} prayer call...')
+        util.prayer.play(azan_name=azan_name)
+        log.info(f'{azan_name} prayer call completed')
+    except Exception as e:
+        log.error(f'Failed to play {azan_name} prayer: {e}')
+
 def main():
     scheduler = sched.scheduler(time.time, time.sleep)
     now = datetime.datetime.now()
@@ -37,7 +46,7 @@ def main():
 
         log.info('{} is scheduled at {}'.format(azan_name, azan_time))
         azan_schedule_disp.append('{} at {}'.format(azan_name, azan_time.strftime("%H:%M")))
-        scheduler.enterabs(float(azan_time.strftime('%s')), 1, util.prayer.play, kwargs={'azan_name':azan_name})
+        scheduler.enterabs(float(azan_time.strftime('%s')), 1, safe_prayer_call, argument=(azan_name,))
 
     if config.default['pioled']:
         display_pioled(azan_schedule_disp)
@@ -49,13 +58,20 @@ if __name__ == '__main__':
     if len(sys.argv) > 1 and sys.argv[1] == 'test':
         util.prayer.play()     
     else:
+        # Schedule main to run at 1:00 AM every day
+        schedule.every().day.at("01:00").do(main)
+        
+        # Run main once initially to schedule today's prayers
+        try:
+            main()
+        except Exception:
+            log.exception('Error in initial prayer scheduling')
+        
+        # Main loop to check for daily rescheduling
         while True:
             try:
-                main()
-                schedule.every().day.at("01:00").do(main)
-                while True:
-                    schedule.run_pending()
-                    time.sleep(60)  # wait one minute
+                schedule.run_pending()
+                time.sleep(60)  # Check every minute
             except Exception:
                 log.exception('Oops something went wrong')
-                raise
+                time.sleep(60)  # Continue running even if error occurs

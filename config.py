@@ -12,8 +12,8 @@ default = {
     "maghrib": True, 
     "isha": True,
     # Audio configuration 
-    "audio_device": "auto",     # "auto" detects USB speaker automatically (portable!)
-                               # Or specify: "plughw:1,0", "hw:1,0", "default", etc.
+    "audio_device": "hw:1,0",   # Use working USB device directly (change if needed)
+                               # Can also use: "auto", "plughw:1,0", "default", etc.
     "audio_method": "auto",     # Try multiple methods: aplay → omxplayer → simpleaudio
     "audio_volume": 100,        # Volume for omxplayer (0-100)
     "audio_retry_attempts": 3,  # Retry count for flaky USB audio
