@@ -74,18 +74,14 @@ def play_with_aplay(file_path, retry_count=3):
         
         # Try each device variant for this attempt
         for device_to_try in devices_to_try:
-            # Try with format parameters first (correct speed)
             try:
-                log.info(f"Attempting to play audio using aplay with {device_to_try} and format params (attempt {attempt + 1}/{retry_count})...")
+                log.info(f"Attempting to play audio using aplay with {device_to_try} (attempt {attempt + 1}/{retry_count})...")
                 
                 cmd = ['aplay']
                 if device_to_try != "default":
                     cmd.extend(['-D', device_to_try])
-                
-                # Add format parameters to ensure correct playback speed
-                cmd.extend(['-r', '22050'])  # Sample rate (most important for speed)
-                cmd.extend(['-f', 'S16_LE']) # Format
-                cmd.extend(['-c', '2'])      # Channels
+                    
+                # Let plughw handle format conversion automatically (no manual format params)
                 cmd.append(file_path)
                 
                 log.info(f"Running aplay command: {' '.join(cmd)}")
@@ -93,24 +89,15 @@ def play_with_aplay(file_path, retry_count=3):
                 log.info(f"Audio played successfully using aplay with {device_to_try}")
                 return True
                 
-            except (subprocess.CalledProcessError, subprocess.TimeoutExpired) as e:
-                log.warning(f"aplay with format params failed: {e}, trying without format params...")
-                
-                # Fallback: try without format parameters (might be fast but will work)
-                try:
-                    cmd = ['aplay']
-                    if device_to_try != "default":
-                        cmd.extend(['-D', device_to_try])
-                    cmd.append(file_path)
+            except subprocess.CalledProcessError as e:
+                log.error(f"aplay with {device_to_try} failed: {e}")
+                if hasattr(e, 'stderr') and e.stderr:
+                    log.error(f"aplay stderr: {e.stderr}")
+                continue  # Try next device
                     
-                    log.info(f"Running fallback aplay command: {' '.join(cmd)}")
-                    result = subprocess.run(cmd, capture_output=True, text=True, check=True, timeout=180)
-                    log.warning(f"Audio played using fallback aplay with {device_to_try} (may be fast)")
-                    return True
-                    
-                except (subprocess.CalledProcessError, subprocess.TimeoutExpired) as e2:
-                    log.error(f"Both format and fallback aplay failed with {device_to_try}: {e2}")
-                    continue  # Try next device
+            except subprocess.TimeoutExpired:
+                log.error(f"aplay with {device_to_try} timed out")
+                continue  # Try next device
                 
             except FileNotFoundError:
                 log.error("aplay command not found")
@@ -207,8 +194,8 @@ def play(name=None, azan_name=None):
     project_root = os.path.dirname(util_dir)
     
     if not name:
-        # Try both MP3 and WAV - MP3 often has better format handling
-        audio_files_to_try = ['azan.mp3', 'azan.wav']
+        # Use WAV file (we know this works)
+        audio_files_to_try = ['azan.wav']
     else:
         audio_files_to_try = [name]
     

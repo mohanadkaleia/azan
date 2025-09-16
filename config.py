@@ -12,9 +12,9 @@ default = {
     "maghrib": True, 
     "isha": True,
     # Audio configuration 
-    "audio_device": "hw:1,0",   # Use working USB device directly (change if needed)
-                               # Can also use: "auto", "plughw:1,0", "default", etc.
-    "audio_method": "omxplayer", # Use omxplayer first - better sample rate handling
+    "audio_device": "plughw:1,0", # Use plughw for automatic sample rate conversion
+                                 # This should fix speed issues without format parameters
+    "audio_method": "aplay",     # Back to aplay - omxplayer hangs
     "audio_volume": 100,        # Volume for omxplayer (0-100)
     "audio_retry_attempts": 3,  # Retry count for flaky USB audio
     "usb_audio_wakeup": True,   # Wake up sleeping USB devices
