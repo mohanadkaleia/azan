@@ -202,17 +202,27 @@ def play_with_simpleaudio(file_path, retry_count=2):
 
 
 def play(name=None, azan_name=None):
-    if not name:
-        name = 'azan.wav'
-
-    # Get the project root directory (parent of util folder)
+    # Get the project root directory (parent of util folder)  
     util_dir = os.path.dirname(os.path.abspath(__file__))
     project_root = os.path.dirname(util_dir)
-    file_path = os.path.join(project_root, 'assets', name)
     
-    # Check if audio file exists
-    if not os.path.exists(file_path):
-        log.error(f"Audio file not found: {file_path}")
+    if not name:
+        # Try both MP3 and WAV - MP3 often has better format handling
+        audio_files_to_try = ['azan.mp3', 'azan.wav']
+    else:
+        audio_files_to_try = [name]
+    
+    # Find the first existing audio file
+    file_path = None
+    for audio_file in audio_files_to_try:
+        test_path = os.path.join(project_root, 'assets', audio_file)
+        if os.path.exists(test_path):
+            file_path = test_path
+            log.info(f"Using audio file: {audio_file}")
+            break
+    
+    if not file_path:
+        log.error(f"No audio file found. Tried: {audio_files_to_try}")
         return False
     
     log.info('Calling {} azan now from file: {}'.format(azan_name or 'test', file_path))

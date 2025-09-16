@@ -14,7 +14,7 @@ default = {
     # Audio configuration 
     "audio_device": "hw:1,0",   # Use working USB device directly (change if needed)
                                # Can also use: "auto", "plughw:1,0", "default", etc.
-    "audio_method": "auto",     # Try multiple methods: aplay → omxplayer → simpleaudio
+    "audio_method": "omxplayer", # Use omxplayer first - better sample rate handling
     "audio_volume": 100,        # Volume for omxplayer (0-100)
     "audio_retry_attempts": 3,  # Retry count for flaky USB audio
     "usb_audio_wakeup": True,   # Wake up sleeping USB devices
